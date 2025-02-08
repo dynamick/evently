@@ -1,4 +1,5 @@
 import { getServerSession, type NextAuthOptions } from "next-auth";
+import GoogleProvider from "next-auth/providers/google";
 import GitHubProvider from "next-auth/providers/github";
 import db from "./db";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
@@ -20,6 +21,10 @@ export const authOptions: NextAuthOptions = {
           image: profile.avatar_url,
         };
       },
+    }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     }),
   ],
   pages: {
@@ -70,15 +75,7 @@ export const authOptions: NextAuthOptions = {
 };
 
 export function getSession() {
-  return getServerSession(authOptions) as Promise<{
-    user: {
-      id: string;
-      name: string;
-      username: string;
-      email: string;
-      image: string;
-    };
-  } | null>;
+  return getServerSession(authOptions) as Promise;
 }
 
 export function withSiteAuth(action: any) {

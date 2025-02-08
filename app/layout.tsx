@@ -30,6 +30,20 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://vercel.pub"),
 };
 
+// Funzione per impostare il tema
+function setInitialTheme() {
+  if (typeof window !== "undefined") {
+    if (localStorage.theme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }
+}
+
+// Imposta il tema prima del montaggio del componente
+setInitialTheme();
+
 export default function RootLayout({
   children,
 }: {

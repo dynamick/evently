@@ -17,7 +17,7 @@ export async function generateStaticParams() {
     },
   });
 
-  const allPaths = allSites
+  return allSites
     .flatMap(({ subdomain, customDomain }) => [
       subdomain && {
         domain: `${subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`,
@@ -27,8 +27,6 @@ export async function generateStaticParams() {
       },
     ])
     .filter(Boolean);
-
-  return allPaths;
 }
 
 export default async function SiteHomePage({
@@ -114,7 +112,7 @@ export default async function SiteHomePage({
               className="hidden dark:block"
             />
             <p className="font-title text-2xl text-stone-600 dark:text-stone-400">
-              No posts yet.
+              No posts yet. test
             </p>
           </div>
         )}
