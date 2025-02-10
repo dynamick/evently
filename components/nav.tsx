@@ -159,7 +159,9 @@ export default function Nav({ children }: { children: ReactNode }) {
     const html = document.querySelector("html");
     if (html) {
       html.classList.toggle("dark");
-      localStorage.theme = html.classList.contains("dark") ? "dark" : "light";
+      if (typeof window !== "undefined") {
+        localStorage.theme = html.classList.contains("dark") ? "dark" : "light";
+      }
     }
   };
 
@@ -237,7 +239,7 @@ export default function Nav({ children }: { children: ReactNode }) {
               className={`flex items-center space-x-3 rounded-lg px-2 py-1.5 transition-all duration-150 ease-in-out hover:bg-stone-200 active:bg-stone-300 dark:text-white dark:hover:bg-stone-700 dark:active:bg-stone-800`}
             >
               <span className="text-sm font-medium">
-                Toggle Theme: {localStorage.theme}
+                Toggle Theme: {typeof window !== "undefined" ? localStorage.theme : ''}
               </span>
             </Link>
           </div>

@@ -8,11 +8,13 @@ import db from "@/lib/db";
 import { posts, sites } from "@/lib/schema";
 import { eq } from "drizzle-orm";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { domain: string; slug: string };
+type PageParams = Promise<{ domain: string; slug: string }>
+
+
+export async function generateMetadata(props: {
+  params: PageParams;
 }) {
+  const params = await props.params
   const domain = decodeURIComponent(params.domain);
   const slug = decodeURIComponent(params.slug);
 
@@ -21,7 +23,7 @@ export async function generateMetadata({
     getSiteData(domain),
   ]);
   if (!data || !siteData) {
-    return null;
+    return { title: "", description: "" };
   }
   const { title, description } = data;
 
@@ -29,14 +31,14 @@ export async function generateMetadata({
     title,
     description,
     openGraph: {
-      title,
-      description,
+      title: title ?? "",
+      description: description ?? "",
     },
     twitter: {
       card: "summary_large_image",
-      title,
-      description,
-      creator: "@vercel",
+      title: title ?? "",
+      description: description ?? "",
+      creator: "@dynamick",
     },
     // Optional: Set canonical URL to custom domain if it exists
     // ...(params.domain.endsWith(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`) &&
@@ -61,8 +63,8 @@ export async function generateStaticParams() {
     .leftJoin(sites, eq(posts.siteId, sites.id))
     .where(eq(sites.subdomain, "demo")); // feel free to remove this filter if you want to generate paths for all posts
 
-  const allPaths = allPosts
-    .flatMap(({ site, slug }) => [
+  return allPosts
+    .flatMap(({site, slug}) => [
       site?.subdomain && {
         domain: `${site.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`,
         slug,
@@ -73,15 +75,13 @@ export async function generateStaticParams() {
       },
     ])
     .filter(Boolean);
-
-  return allPaths;
 }
 
-export default async function SitePostPage({
-  params,
-}: {
-  params: { domain: string; slug: string };
-}) {
+
+export default async function SitePostPage(
+  props: { params: PageParams }
+) {
+  const params = await props.params
   const domain = decodeURIComponent(params.domain);
   const slug = decodeURIComponent(params.slug);
   const data = await getPostData(domain, slug);

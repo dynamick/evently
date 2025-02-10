@@ -75,7 +75,15 @@ export const authOptions: NextAuthOptions = {
 };
 
 export function getSession() {
-  return getServerSession(authOptions) as Promise;
+  return getServerSession(authOptions) as Promise<{
+    user: {
+      id: string;
+      name: string;
+      username: string;
+      email: string;
+      image: string;
+    };
+  } | null>;
 }
 
 export function withSiteAuth(action: any) {

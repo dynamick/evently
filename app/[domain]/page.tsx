@@ -28,12 +28,12 @@ export async function generateStaticParams() {
     ])
     .filter(Boolean);
 }
+type PageParams = Promise<{ domain: string }>;
 
-export default async function SiteHomePage({
-  params,
-}: {
-  params: { domain: string };
+export default async function SiteHomePage(props: {
+  params: PageParams;
 }) {
+  const params = await props.params;
   const domain = decodeURIComponent(params.domain);
   const [data, posts] = await Promise.all([
     getSiteData(domain),

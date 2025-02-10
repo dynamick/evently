@@ -4,11 +4,11 @@ import Posts from "@/components/posts";
 import CreatePostButton from "@/components/create-post-button";
 import db from "@/lib/db";
 
-export default async function SitePosts({
-  params,
-}: {
-  params: { id: string };
+type SitePostsParams = Promise<{ id: string }>;
+export default async function SitePosts(props: {
+  params: SitePostsParams;
 }) {
+  const params = await props.params;
   const session = await getSession();
   if (!session) {
     redirect("/login");

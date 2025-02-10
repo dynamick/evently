@@ -8,11 +8,11 @@ import { getSiteData } from "@/lib/fetchers";
 import { fontMapper } from "@/styles/fonts";
 import { Metadata } from "next";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { domain: string };
+type PageParams = Promise<{ domain: string }>;
+export async function generateMetadata(props: {
+  params: PageParams;
 }): Promise<Metadata | null> {
+  const params = await props.params;
   const domain = decodeURIComponent(params.domain);
   const data = await getSiteData(domain);
   if (!data) {

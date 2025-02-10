@@ -2,11 +2,11 @@ import Form from "@/components/form";
 import { updateSite } from "@/lib/actions";
 import db from "@/lib/db";
 
-export default async function SiteSettingsAppearance({
-  params,
-}: {
-  params: { id: string };
+type SiteSettingsAppearanceParams = Promise<{ id: string }>;
+export default async function SiteSettingsAppearance(props: {
+  params: SiteSettingsAppearanceParams;
 }) {
+  const params = await props.params;
   const data = await db.query.sites.findFirst({
     where: (sites, { eq }) => eq(sites.id, decodeURIComponent(params.id)),
   });

@@ -3,11 +3,12 @@ import { notFound, redirect } from "next/navigation";
 import AnalyticsMockup from "@/components/analytics";
 import db from "@/lib/db";
 
-export default async function SiteAnalytics({
-  params,
-}: {
-  params: { id: string };
+type SiteAnalyticsParams = Promise<{ id: string }>;
+
+export default async function SiteAnalytics(props: {
+  params: SiteAnalyticsParams;
 }) {
+  const params = await props.params;
   const session = await getSession();
   if (!session) {
     redirect("/login");
