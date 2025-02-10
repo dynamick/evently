@@ -155,16 +155,6 @@ export default function Nav({ children }: { children: ReactNode }) {
     setShowSidebar(false);
   }, [pathname]);
 
-  const toggleTheme = () => {
-    const html = document.querySelector("html");
-    if (html) {
-      html.classList.toggle("dark");
-      if (typeof window !== "undefined") {
-        localStorage.theme = html.classList.contains("dark") ? "dark" : "light";
-      }
-    }
-  };
-
   return (
     <>
       <button
@@ -231,17 +221,6 @@ export default function Nav({ children }: { children: ReactNode }) {
                 <span className="text-sm font-medium">{name}</span>
               </Link>
             ))}
-          </div>
-          <div className="grid gap-1">
-            <Link
-              href="#"
-              onClick={toggleTheme}
-              className={`flex items-center space-x-3 rounded-lg px-2 py-1.5 transition-all duration-150 ease-in-out hover:bg-stone-200 active:bg-stone-300 dark:text-white dark:hover:bg-stone-700 dark:active:bg-stone-800`}
-            >
-              <span className="text-sm font-medium">
-                Toggle Theme: {typeof window !== "undefined" ? localStorage.theme : ''}
-              </span>
-            </Link>
           </div>
         </div>
         <div>
