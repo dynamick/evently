@@ -57,13 +57,13 @@ export async function generateMetadata(props: {
   };
 }
 
-export default async function SiteLayout({
-  params,
-  children,
-}: {
-  params: { domain: string };
+type SiteLayoutParams = Promise<{ domain: string }>;
+export default async function SiteLayout(props: {
+  params: SiteLayoutParams;
   children: ReactNode;
 }) {
+  const params = await props.params;
+  const children = props.children;
   const domain = decodeURIComponent(params.domain);
   const data = await getSiteData(domain);
 
