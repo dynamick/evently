@@ -85,11 +85,24 @@ export default async function SitePostPage(
   const domain = decodeURIComponent(params.domain);
   const slug = decodeURIComponent(params.slug);
   const data = await getPostData(domain, slug);
-
   if (!data) {
     notFound();
   }
-
+  // const data = {
+  //   title: "Post Title",
+  //   description: "Post Description",
+  //   createdAt: new Date(),
+  //   site: {
+  //     user: {
+  //       username: "dynamick",
+  //       name: "Michael",
+  //       image: "https://avatars.githubusercontent.com/u/4726921?v=4",
+  //       gh_username: "dynamick",
+  //     },
+  //   },
+  //   adjacentPosts: [],
+  //   mdxSource: "",
+  // }
   return (
     <>
       <div className="flex flex-col items-center justify-center">
@@ -147,7 +160,7 @@ export default async function SitePostPage(
         />
       </div>
 
-      <MDX source={data.mdxSource} />
+      {/*<MDX source={data.mdxSource} />*/}
 
       {data.adjacentPosts.length > 0 && (
         <div className="relative mb-20 mt-10 sm:mt-20">
