@@ -50,32 +50,32 @@ export async function generateMetadata(props: {
   };
 }
 
-// export async function generateStaticParams() {
-//   const allPosts = await db
-//     .select({
-//       slug: posts.slug,
-//       site: {
-//         subdomain: sites.subdomain,
-//         customDomain: sites.customDomain,
-//       },
-//     })
-//     .from(posts)
-//     .leftJoin(sites, eq(posts.siteId, sites.id))
-//     .where(eq(sites.subdomain, "demo")); // feel free to remove this filter if you want to generate paths for all posts
-//
-//   return allPosts
-//     .flatMap(({site, slug}) => [
-//       site?.subdomain && {
-//         domain: `${site.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`,
-//         slug,
-//       },
-//       site?.customDomain && {
-//         domain: site.customDomain,
-//         slug,
-//       },
-//     ])
-//     .filter(Boolean);
-// }
+export async function generateStaticParams() {
+  const allPosts = await db
+    .select({
+      slug: posts.slug,
+      site: {
+        subdomain: sites.subdomain,
+        customDomain: sites.customDomain,
+      },
+    })
+    .from(posts)
+    .leftJoin(sites, eq(posts.siteId, sites.id))
+    .where(eq(sites.subdomain, "demo")); // feel free to remove this filter if you want to generate paths for all posts
+
+  return allPosts
+    .flatMap(({site, slug}) => [
+      site?.subdomain && {
+        domain: `${site.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`,
+        slug,
+      },
+      site?.customDomain && {
+        domain: site.customDomain,
+        slug,
+      },
+    ])
+    .filter(Boolean);
+}
 
 
 export default async function SitePostPage(
